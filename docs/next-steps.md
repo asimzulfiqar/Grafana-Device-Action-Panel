@@ -26,41 +26,41 @@ The technical foundation is working:
 - [x] Add `provisioning/dashboards/device-actions.json`.
 - [x] Mount the provisioning directory into the Grafana container.
 - [x] Provision a dashboard variable whose display text differs from its raw device ID.
-- [x] Add example panels for selected device, missing device, denied device, failed device, and slow device.
+- [x] Add example panels for selected device, missing device, malformed device, denied device, failed device, and slow device.
 - [x] Confirm `docker compose up --build` produces a usable dashboard without manual imports.
 
 ### 2. Add Playwright and Grafana plugin-e2e
 
-- [ ] Add `@grafana/plugin-e2e` and `@playwright/test` dev dependencies.
-- [ ] Add `playwright.config.ts`.
-- [ ] Add an `e2e` script that runs `playwright test`.
-- [ ] Add `tests-e2e/` with panel and connector specs.
-- [ ] Install Playwright Chromium in local development and CI.
-- [ ] Add a CI workflow that runs supported Grafana versions from `src/plugin.json`.
+- [x] Add `@grafana/plugin-e2e` and `@playwright/test` dev dependencies.
+- [x] Add `playwright.config.ts`.
+- [x] Add an `e2e` script that runs `playwright test`.
+- [x] Add `tests-e2e/` with panel and connector specs.
+- [x] Install Playwright Chromium in local development and CI.
+- [x] Add a CI workflow that runs supported Grafana versions from `src/plugin.json`.
 
 ### 3. Harden backend behavior
 
-- [ ] Add tests for backend unavailable and timeout mapping.
-- [ ] Add tests for missing and malformed device IDs.
-- [ ] Add tests for cooldown rejection and expiry.
-- [ ] Add tests for role allow and deny behavior.
-- [ ] Confirm audit logs are emitted for success, rejection, denial, and timeout.
-- [ ] Decide whether cooldown should start before dispatch or only after an accepted backend response.
+- [x] Add tests for backend unavailable and timeout mapping.
+- [x] Add tests for missing and malformed device IDs.
+- [x] Add tests for cooldown rejection and expiry.
+- [x] Add tests for role allow and deny behavior.
+- [x] Confirm audit logs are emitted for success, rejection, denial, and timeout.
+- [x] Decide whether cooldown should start before dispatch or only after an accepted backend response.
 
 ### 4. Improve operator documentation
 
-- [ ] Document the panel-side connector flow.
-- [ ] Document why Docker Compose uses `http://mock-api:8080` while host curl checks use `http://localhost:8080`.
-- [ ] Add screenshots for the panel, confirmation dialog, and connector side menu.
-- [ ] Add troubleshooting steps for unsigned-plugin loading and backend startup.
+- [x] Document the panel-side connector flow.
+- [x] Document why Docker Compose uses `http://mock-api:8080` while host curl checks use `http://localhost:8080`.
+- [x] Add screenshots for the panel, confirmation dialog, and connector side menu.
+- [x] Add troubleshooting steps for unsigned-plugin loading and backend startup.
 
 ### 5. Prepare release validation
 
-- [ ] Add Grafana plugin validator instructions.
-- [ ] Add packaging instructions.
-- [ ] Add signing instructions for private or catalog distribution.
-- [ ] Verify that frontend builds preserve the compiled backend binaries in `dist`.
-- [ ] Test a fresh clone with no existing Grafana database.
+- [x] Add Grafana plugin validator instructions.
+- [x] Add packaging instructions.
+- [x] Add signing instructions for private or catalog distribution.
+- [x] Verify that frontend builds preserve the compiled backend binaries in `dist`.
+- [x] Test a fresh checkout with no existing Grafana database.
 
 ## E2E scenarios
 

@@ -7,7 +7,7 @@ An app plugin with a nested dashboard panel for safe, backend-mediated IoT devic
 - Bind a device ID from the raw value of a dashboard variable, the latest query field value, or a static value.
 - Trigger cancel-alert, acknowledge-alarm, and reboot actions without browser-to-IoT-backend requests.
 - Validate identifiers, restrict endpoint templates, enforce optional role policies, apply cooldowns, and emit audit logs.
-- Configure a generic REST connector and encrypted bearer token from the app configuration page.
+- Configure a generic REST connector and encrypted bearer token from the panel side menu.
 - Show confirmation, typed confirmation, progress, success, denied, timeout, and failure states inline.
 
 ## Development
@@ -55,3 +55,11 @@ npm run e2e
 ```
 
 See `docs/troubleshooting.md` for local setup issues and `docs/release.md` for packaging and signing guidance.
+
+## Screenshots
+
+![Provisioned demo dashboard](docs/images/demo-dashboard.png)
+
+![Typed reboot confirmation](docs/images/reboot-confirmation.png)
+
+![Panel connector side menu](docs/images/connector-side-menu.png)
