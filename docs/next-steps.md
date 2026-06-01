@@ -22,12 +22,12 @@ The technical foundation is working:
 
 ### 1. Provision the example environment
 
-- [ ] Add `provisioning/dashboards/dashboard.yaml`.
-- [ ] Add `provisioning/dashboards/device-actions.json`.
-- [ ] Mount the provisioning directory into the Grafana container.
-- [ ] Provision a dashboard variable whose display text differs from its raw device ID.
-- [ ] Add example panels for selected device, missing device, denied device, failed device, and slow device.
-- [ ] Confirm `docker compose up --build` produces a usable dashboard without manual imports.
+- [x] Add `provisioning/dashboards/dashboard.yaml`.
+- [x] Add `provisioning/dashboards/device-actions.json`.
+- [x] Mount the provisioning directory into the Grafana container.
+- [x] Provision a dashboard variable whose display text differs from its raw device ID.
+- [x] Add example panels for selected device, missing device, denied device, failed device, and slow device.
+- [x] Confirm `docker compose up --build` produces a usable dashboard without manual imports.
 
 ### 2. Add Playwright and Grafana plugin-e2e
 
@@ -115,4 +115,3 @@ Before declaring Stage 2 complete:
 - [Configure necessary resources](https://grafana.com/developers/plugin-tools/e2e-test-a-plugin/setup-resources)
 - [Provide a plugin test environment](https://grafana.com/developers/plugin-tools/publish-a-plugin/provide-test-environment)
 - [Sign a plugin](https://grafana.com/developers/plugin-tools/publish-a-plugin/sign-a-plugin)
-

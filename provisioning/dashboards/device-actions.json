@@ -1,0 +1,193 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "grafana",
+        "uid": "grafana"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "actionKeys": "cancel_alert,acknowledge_alarm,reboot_device",
+        "actionsJson": "[\n  {\n    \"key\": \"cancel_alert\",\n    \"label\": \"Cancel Alert\",\n    \"description\": \"Cancel the active alert for this device.\",\n    \"path\": \"/devices/{{deviceId}}/alerts/cancel\",\n    \"method\": \"POST\",\n    \"confirmation\": \"simple\",\n    \"confirmationText\": \"Cancel the active alert for {{deviceId}}?\",\n    \"cooldownSeconds\": 5\n  },\n  {\n    \"key\": \"acknowledge_alarm\",\n    \"label\": \"Acknowledge Alarm\",\n    \"description\": \"Acknowledge the current alarm.\",\n    \"path\": \"/devices/{{deviceId}}/alarms/acknowledge\",\n    \"method\": \"POST\",\n    \"confirmation\": \"simple\",\n    \"cooldownSeconds\": 5\n  },\n  {\n    \"key\": \"reboot_device\",\n    \"label\": \"Reboot Device\",\n    \"description\": \"Restart the selected device.\",\n    \"style\": \"destructive\",\n    \"path\": \"/devices/{{deviceId}}/reboot\",\n    \"method\": \"POST\",\n    \"confirmation\": \"typed\",\n    \"typedConfirmation\": \"REBOOT\",\n    \"cooldownSeconds\": 30\n  }\n]",
+        "bindingSource": "variable",
+        "deviceVariable": "dev_eui",
+        "emptyMessage": "Select a device to enable actions.",
+        "siteTemplate": "",
+        "tenantTemplate": "",
+        "title": "Selected device actions"
+      },
+      "pluginVersion": "0.1.0",
+      "targets": [],
+      "title": "Selected Device",
+      "type": "asim-device-action-panel"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 0,
+        "y": 8
+      },
+      "id": 2,
+      "options": {
+        "actionKeys": "cancel_alert",
+        "bindingSource": "static",
+        "emptyMessage": "Expected: actions are unavailable because no device is selected.",
+        "staticDeviceId": "",
+        "title": "Missing device fixture"
+      },
+      "pluginVersion": "0.1.0",
+      "targets": [],
+      "title": "Missing Device",
+      "type": "asim-device-action-panel"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 6,
+        "y": 8
+      },
+      "id": 3,
+      "options": {
+        "actionKeys": "cancel_alert",
+        "bindingSource": "static",
+        "staticDeviceId": "denied0000000000",
+        "title": "Denied fixture"
+      },
+      "pluginVersion": "0.1.0",
+      "targets": [],
+      "title": "Denied Response",
+      "type": "asim-device-action-panel"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 12,
+        "y": 8
+      },
+      "id": 4,
+      "options": {
+        "actionKeys": "cancel_alert",
+        "bindingSource": "static",
+        "staticDeviceId": "fail000000000000",
+        "title": "Failure fixture"
+      },
+      "pluginVersion": "0.1.0",
+      "targets": [],
+      "title": "Backend Failure",
+      "type": "asim-device-action-panel"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 18,
+        "y": 8
+      },
+      "id": 5,
+      "options": {
+        "actionKeys": "cancel_alert",
+        "bindingSource": "static",
+        "staticDeviceId": "slow000000000000",
+        "title": "Timeout fixture"
+      },
+      "pluginVersion": "0.1.0",
+      "targets": [],
+      "title": "Backend Timeout",
+      "type": "asim-device-action-panel"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 41,
+  "tags": [
+    "iot",
+    "device-actions",
+    "demo"
+  ],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "selected": true,
+          "text": "Pump Alpha",
+          "value": "e726ff618db6bbdc"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "label": "Device",
+        "multi": false,
+        "name": "dev_eui",
+        "options": [
+          {
+            "selected": true,
+            "text": "Pump Alpha",
+            "value": "e726ff618db6bbdc"
+          },
+          {
+            "selected": false,
+            "text": "Denied Fixture",
+            "value": "denied0000000000"
+          },
+          {
+            "selected": false,
+            "text": "Failure Fixture",
+            "value": "fail000000000000"
+          },
+          {
+            "selected": false,
+            "text": "Slow Fixture",
+            "value": "slow000000000000"
+          }
+        ],
+        "query": "Pump Alpha : e726ff618db6bbdc, Denied Fixture : denied0000000000, Failure Fixture : fail000000000000, Slow Fixture : slow000000000000",
+        "skipUrlSync": false,
+        "type": "custom"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-15m",
+    "to": "now"
+  },
+  "timezone": "browser",
+  "title": "Device Action Panel Demo",
+  "uid": "device-action-panel-demo",
+  "version": 1,
+  "weekStart": ""
+}
+

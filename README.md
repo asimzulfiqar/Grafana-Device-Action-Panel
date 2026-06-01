@@ -27,6 +27,14 @@ docker compose up
 
 Open Grafana at `http://localhost:3000`, enable **Grafana Device Action Panel**, and add the nested **Device Action Panel** visualization to a dashboard. Configure the REST connector from the panel editor's **Connector** section. For local testing, set the plugin backend URL to `http://mock-api:8080`; `http://localhost:8080` is only for curl commands run from your host machine. See `test/mock-api/README.md`.
 
+Docker Compose provisions a ready-to-use demo dashboard automatically:
+
+```text
+http://localhost:3000/d/device-action-panel-demo/device-action-panel-demo
+```
+
+The dashboard includes a friendly-label/raw-ID variable example and fixtures for missing IDs, denied actions, backend failures, and timeouts.
+
 ## Configuration
 
 The panel editor's **Connector** section stores `baseUrl` in app JSON settings and the bearer token in Grafana secure JSON data. The token is only decrypted for the Go backend and is never written to dashboard JSON. The app configuration page retains advanced validation, timeout, and action-catalog settings.
