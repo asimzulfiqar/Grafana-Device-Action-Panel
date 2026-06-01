@@ -1,7 +1,7 @@
 import React, { useState, type FormEvent } from 'react';
 import type { AppPluginMeta, PluginConfigPageProps } from '@grafana/data';
 import { getBackendSrv } from '@grafana/runtime';
-import { Alert, Button, Field, FieldSet, Input, SecretInput, TextArea } from '@grafana/ui';
+import { Alert, Button, Field, FieldSet, Input, TextArea } from '@grafana/ui';
 import { DEFAULT_SETTINGS } from '../defaults';
 import type { AppSettings } from '../types';
 
@@ -10,12 +10,9 @@ export interface AppConfigProps extends PluginConfigPageProps<AppPluginMeta<AppS
 export function AppConfig({ plugin }: AppConfigProps) {
   const { enabled, pinned, jsonData, secureJsonFields } = plugin.meta;
   const initial = { ...DEFAULT_SETTINGS, ...jsonData };
-  const [baseUrl, setBaseUrl] = useState(initial.baseUrl);
   const [deviceIdPattern, setDeviceIdPattern] = useState(initial.deviceIdPattern);
   const [defaultTimeoutSeconds, setDefaultTimeoutSeconds] = useState(initial.defaultTimeoutSeconds);
   const [actionsJson, setActionsJson] = useState(JSON.stringify(initial.actions, null, 2));
-  const [apiToken, setApiToken] = useState('');
-  const [isApiTokenSet, setIsApiTokenSet] = useState(Boolean(secureJsonFields?.apiToken));
   const [message, setMessage] = useState<string>();
 
   const submit = async (event: FormEvent) => {
@@ -28,8 +25,7 @@ export function AppConfig({ plugin }: AppConfigProps) {
       await getBackendSrv().post(`/api/plugins/${plugin.meta.id}/settings`, {
         enabled,
         pinned,
-        jsonData: { baseUrl, deviceIdPattern, defaultTimeoutSeconds, actions },
-        secureJsonData: isApiTokenSet ? undefined : { apiToken },
+        jsonData: { ...initial, deviceIdPattern, defaultTimeoutSeconds, actions },
       });
       setMessage('Settings saved. Reload Grafana dashboards to use the updated catalog.');
     } catch (error) {
@@ -44,22 +40,11 @@ export function AppConfig({ plugin }: AppConfigProps) {
 
   return (
     <form onSubmit={submit} style={{ maxWidth: 920 }}>
-      <FieldSet label="REST connector">
+      <FieldSet label="Advanced backend settings">
         {message && <Alert title={message} severity="info" />}
-        <Field label="Backend base URL" description="Called only by the server-side plugin backend.">
-          <Input value={baseUrl} onChange={changeInput(setBaseUrl)} placeholder="https://iot-api.example.com" />
-        </Field>
-        <Field label="Bearer token" description="Stored as encrypted secure JSON data and never returned to the browser.">
-          <SecretInput
-            value={apiToken}
-            isConfigured={isApiTokenSet}
-            onChange={changeInput(setApiToken)}
-            onReset={() => {
-              setApiToken('');
-              setIsApiTokenSet(false);
-            }}
-          />
-        </Field>
+        <Alert title="Connector settings moved to the panel side editor" severity="info">
+          Edit a Device Action Panel and open Connector to set the server-side backend URL and encrypted token.
+        </Alert>
         <Field label="Device ID regular expression">
           <Input value={deviceIdPattern} onChange={changeInput(setDeviceIdPattern)} />
         </Field>

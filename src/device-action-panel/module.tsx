@@ -1,10 +1,19 @@
 import { PanelPlugin } from '@grafana/data';
 import { DeviceActionPanel } from './DeviceActionPanel';
+import { ConnectorSettingsEditor } from './ConnectorSettingsEditor';
 import { DEFAULT_PANEL_OPTIONS } from './defaults';
 import type { PanelOptions } from './types';
 
 export const plugin = new PanelPlugin<PanelOptions>(DeviceActionPanel).setPanelOptions((builder) =>
   builder
+    .addCustomEditor<void, string>({
+      id: 'connectorSettings',
+      path: 'connectorSettings',
+      name: 'REST connector',
+      description: 'Server-side backend URL and encrypted bearer token.',
+      category: ['Connector'],
+      editor: ConnectorSettingsEditor,
+    })
     .addTextInput({ path: 'title', name: 'Panel heading', defaultValue: DEFAULT_PANEL_OPTIONS.title })
     .addRadio({
       path: 'bindingSource',
@@ -49,4 +58,3 @@ export const plugin = new PanelPlugin<PanelOptions>(DeviceActionPanel).setPanelO
     })
     .addTextInput({ path: 'emptyMessage', name: 'No device message', defaultValue: DEFAULT_PANEL_OPTIONS.emptyMessage })
 );
-

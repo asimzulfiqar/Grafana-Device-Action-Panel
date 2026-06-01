@@ -37,7 +37,9 @@ const config = (_env: Record<string, unknown>): Configuration => ({
     ],
   },
   output: {
-    clean: true,
+    clean: {
+      keep: /(.*?_(amd64|arm(64)?)(\.exe)?|go_plugin_build_manifest)/,
+    },
     filename: '[name].js',
     library: { type: 'amd' },
     path: path.resolve(process.cwd(), 'dist'),
@@ -57,4 +59,3 @@ const config = (_env: Record<string, unknown>): Configuration => ({
 });
 
 export default config;
-

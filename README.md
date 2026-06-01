@@ -25,10 +25,10 @@ mage -v build:linux
 docker compose up
 ```
 
-Open Grafana at `http://localhost:3000`, enable **Grafana Device Action Panel**, configure the REST connector, and add the nested **Device Action Panel** visualization to a dashboard. For local testing, set the plugin backend URL to `http://mock-api:8080`; `http://localhost:8080` is only for curl commands run from your host machine. See `test/mock-api/README.md`.
+Open Grafana at `http://localhost:3000`, enable **Grafana Device Action Panel**, and add the nested **Device Action Panel** visualization to a dashboard. Configure the REST connector from the panel editor's **Connector** section. For local testing, set the plugin backend URL to `http://mock-api:8080`; `http://localhost:8080` is only for curl commands run from your host machine. See `test/mock-api/README.md`.
 
 ## Configuration
 
-The app configuration page stores `baseUrl`, `deviceIdPattern`, default timeout, and the action catalog in app JSON settings. The bearer token is stored in Grafana secure JSON data and is only decrypted for the Go backend.
+The panel editor's **Connector** section stores `baseUrl` in app JSON settings and the bearer token in Grafana secure JSON data. The token is only decrypted for the Go backend and is never written to dashboard JSON. The app configuration page retains advanced validation, timeout, and action-catalog settings.
 
 Action paths must stay relative to the configured backend. Supported template placeholders are `{{deviceId}}`, `{{tenantId}}`, `{{siteId}}`, and `{{parameters.<name>}}`.
