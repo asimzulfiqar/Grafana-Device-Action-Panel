@@ -13,7 +13,7 @@ Start Grafana and the mock API:
 docker compose up --build
 ```
 
-Configure the plugin backend URL as `http://mock-api:8080`. Leave the bearer token blank unless `MOCK_API_TOKEN` is set for the container.
+Configure the plugin backend URL as `http://mock-api:8080`. The plugin backend runs inside the Grafana container, so do not use `http://localhost:8080` in Grafana settings. Leave the bearer token blank unless `MOCK_API_TOKEN` is set for the container.
 
 ## Quick checks
 
@@ -33,4 +33,3 @@ curl.exe -X POST "http://localhost:8080/devices/e726ff618db6bbdc/reboot?simulate
 ```
 
 Device IDs beginning with `denied`, `fail`, or `slow` trigger the same behaviors without query parameters.
-

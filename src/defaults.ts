@@ -34,9 +34,8 @@ export const DEFAULT_ACTIONS: ActionDefinition[] = [
 ];
 
 export const DEFAULT_SETTINGS: AppSettings = {
-  baseUrl: 'http://host.docker.internal:8080',
+  baseUrl: 'http://mock-api:8080',
   deviceIdPattern: '^[A-Za-z0-9][A-Za-z0-9._:-]{1,127}$',
   defaultTimeoutSeconds: 10,
   actions: DEFAULT_ACTIONS,
 };
-

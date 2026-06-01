@@ -25,7 +25,7 @@ mage -v build:linux
 docker compose up
 ```
 
-Open Grafana at `http://localhost:3000`, enable **Grafana Device Action Panel**, configure the REST connector, and add the nested **Device Action Panel** visualization to a dashboard. For local testing, use the included Flask mock API at `http://mock-api:8080`; see `test/mock-api/README.md`.
+Open Grafana at `http://localhost:3000`, enable **Grafana Device Action Panel**, configure the REST connector, and add the nested **Device Action Panel** visualization to a dashboard. For local testing, set the plugin backend URL to `http://mock-api:8080`; `http://localhost:8080` is only for curl commands run from your host machine. See `test/mock-api/README.md`.
 
 ## Configuration
 
