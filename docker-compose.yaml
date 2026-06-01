@@ -1,0 +1,11 @@
+services:
+  grafana:
+    image: grafana/grafana:12.4.2
+    ports:
+      - "3000:3000"
+    environment:
+      GF_DEFAULT_APP_MODE: development
+      GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: asim-device-action-app,asim-device-action-panel
+    volumes:
+      - ./dist:/var/lib/grafana/plugins/asim-device-action-app
+

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://raw.githubusercontent.com/grafana/grafana/main/docs/sources/developers/plugins/plugin.schema.json",
+  "type": "app",
+  "name": "Grafana Device Action Panel",
+  "id": "asim-device-action-app",
+  "backend": true,
+  "executable": "gpx_device_action",
+  "info": {
+    "keywords": ["iot", "device", "actions", "operations"],
+    "description": "Safe, validated, and auditable IoT actions from Grafana dashboards.",
+    "author": { "name": "Asim" },
+    "logos": { "small": "img/logo.svg", "large": "img/logo.svg" },
+    "screenshots": [],
+    "version": "0.1.0",
+    "updated": "2026-06-01"
+  },
+  "includes": [
+    {
+      "type": "page",
+      "name": "Device Actions",
+      "path": "/a/asim-device-action-app",
+      "addToNav": true,
+      "defaultNav": true
+    },
+    {
+      "type": "page",
+      "icon": "cog",
+      "name": "Configuration",
+      "path": "/plugins/asim-device-action-app",
+      "role": "Admin",
+      "addToNav": true
+    }
+  ],
+  "dependencies": { "grafanaDependency": ">=10.0.0", "plugins": [] }
+}
+

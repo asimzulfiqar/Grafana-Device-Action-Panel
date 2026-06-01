@@ -1,0 +1,20 @@
+{
+  "$schema": "https://raw.githubusercontent.com/grafana/grafana/main/docs/sources/developers/plugins/plugin.schema.json",
+  "type": "panel",
+  "name": "Device Action Panel",
+  "id": "asim-device-action-panel",
+  "info": {
+    "keywords": ["iot", "actions", "control"],
+    "description": "Trigger safe IoT device actions through the Device Action app backend.",
+    "author": { "name": "Asim" },
+    "logos": { "small": "../img/logo.svg", "large": "../img/logo.svg" },
+    "screenshots": [],
+    "version": "0.1.0",
+    "updated": "2026-06-01"
+  },
+  "dependencies": {
+    "grafanaDependency": ">=10.0.0",
+    "plugins": [{ "id": "asim-device-action-app", "type": "app", "name": "Grafana Device Action Panel", "version": "0.1.0" }]
+  }
+}
+
