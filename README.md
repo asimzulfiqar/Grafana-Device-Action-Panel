@@ -25,11 +25,10 @@ mage -v build:linux
 docker compose up
 ```
 
-Open Grafana at `http://localhost:3000`, enable **Grafana Device Action Panel**, configure the REST connector, and add the nested **Device Action Panel** visualization to a dashboard.
+Open Grafana at `http://localhost:3000`, enable **Grafana Device Action Panel**, configure the REST connector, and add the nested **Device Action Panel** visualization to a dashboard. For local testing, use the included Flask mock API at `http://mock-api:8080`; see `test/mock-api/README.md`.
 
 ## Configuration
 
 The app configuration page stores `baseUrl`, `deviceIdPattern`, default timeout, and the action catalog in app JSON settings. The bearer token is stored in Grafana secure JSON data and is only decrypted for the Go backend.
 
 Action paths must stay relative to the configured backend. Supported template placeholders are `{{deviceId}}`, `{{tenantId}}`, `{{siteId}}`, and `{{parameters.<name>}}`.
-
