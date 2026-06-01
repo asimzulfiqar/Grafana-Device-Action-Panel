@@ -10,6 +10,6 @@ export interface PanelOptions {
   siteTemplate: string;
   actionKeys: string;
   actionsJson: string;
+  actions?: import('../types').ActionDefinition[];
   emptyMessage: string;
 }
-

@@ -1,7 +1,7 @@
 import React, { useState, type FormEvent } from 'react';
 import type { AppPluginMeta, PluginConfigPageProps } from '@grafana/data';
 import { getBackendSrv } from '@grafana/runtime';
-import { Alert, Button, Field, FieldSet, Input, TextArea } from '@grafana/ui';
+import { Alert, Button, Field, FieldSet, Input } from '@grafana/ui';
 import { DEFAULT_SETTINGS } from '../defaults';
 import type { AppSettings } from '../types';
 
@@ -12,20 +12,15 @@ export function AppConfig({ plugin }: AppConfigProps) {
   const initial = { ...DEFAULT_SETTINGS, ...jsonData };
   const [deviceIdPattern, setDeviceIdPattern] = useState(initial.deviceIdPattern);
   const [defaultTimeoutSeconds, setDefaultTimeoutSeconds] = useState(initial.defaultTimeoutSeconds);
-  const [actionsJson, setActionsJson] = useState(JSON.stringify(initial.actions, null, 2));
   const [message, setMessage] = useState<string>();
 
   const submit = async (event: FormEvent) => {
     event.preventDefault();
     try {
-      const actions = JSON.parse(actionsJson);
-      if (!Array.isArray(actions) || actions.length === 0) {
-        throw new Error('Action catalog must contain at least one action.');
-      }
       await getBackendSrv().post(`/api/plugins/${plugin.meta.id}/settings`, {
         enabled,
         pinned,
-        jsonData: { ...initial, deviceIdPattern, defaultTimeoutSeconds, actions },
+        jsonData: { ...initial, deviceIdPattern, defaultTimeoutSeconds },
       });
       setMessage('Settings saved. Reload Grafana dashboards to use the updated catalog.');
     } catch (error) {
@@ -35,9 +30,6 @@ export function AppConfig({ plugin }: AppConfigProps) {
 
   const changeInput = (setter: (value: string) => void) => (event: FormEvent<HTMLInputElement>) =>
     setter(event.currentTarget.value);
-  const changeTextArea = (setter: (value: string) => void) => (event: FormEvent<HTMLTextAreaElement>) =>
-    setter(event.currentTarget.value);
-
   return (
     <form onSubmit={submit} style={{ maxWidth: 920 }}>
       <FieldSet label="Advanced backend settings">
@@ -56,11 +48,9 @@ export function AppConfig({ plugin }: AppConfigProps) {
           />
         </Field>
       </FieldSet>
-      <FieldSet label="Action catalog">
-        <Field label="Actions JSON" description="Define paths, confirmation rules, cooldowns, and optional allowedRoles.">
-          <TextArea rows={24} value={actionsJson} onChange={changeTextArea(setActionsJson)} />
-        </Field>
-      </FieldSet>
+      <Alert title="Action buttons are configured visually" severity="info">
+        Edit a Device Action Panel and open Actions to add, reorder, style, or remove buttons.
+      </Alert>
       <Button type="submit">Save settings</Button>
     </form>
   );

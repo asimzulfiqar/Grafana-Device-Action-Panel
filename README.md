@@ -39,6 +39,8 @@ Docker Compose also provisions the local connector URL as `http://mock-api:8080`
 
 ## Configuration
 
-The panel editor's **Connector** section stores `baseUrl` in app JSON settings and the bearer token in Grafana secure JSON data. The token is only decrypted for the Go backend and is never written to dashboard JSON. The app configuration page retains advanced validation, timeout, and action-catalog settings.
+The panel editor's **Connector** section stores `baseUrl` in app JSON settings and the bearer token in Grafana secure JSON data. The token is only decrypted for the Go backend and is never written to dashboard JSON. The app configuration page retains advanced validation and default-timeout settings.
+
+Use the panel editor's **Actions** section to add buttons visually. Each button supports a label, stable action key, description, style, custom color, HTTP method, relative path, optional JSON body, confirmation mode, cooldown, timeout, and allowed roles. Click **Save action catalog** after editing so the server-side connector authorizes the updated buttons, then save the dashboard.
 
 Action paths must stay relative to the configured backend. Supported template placeholders are `{{deviceId}}`, `{{tenantId}}`, `{{siteId}}`, and `{{parameters.<name>}}`.

@@ -6,6 +6,7 @@ export interface ActionDefinition {
   label: string;
   description?: string;
   style?: ActionStyle;
+  color?: string;
   path: string;
   method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
   bodyTemplate?: string;
@@ -44,4 +45,3 @@ export interface ActionResponse {
   completedAt: string;
   retryable?: boolean;
 }
-

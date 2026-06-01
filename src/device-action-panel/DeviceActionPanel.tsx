@@ -27,7 +27,10 @@ export function DeviceActionPanel({
   const [now, setNow] = useState(Date.now());
 
   const deviceId = resolveDeviceId(options, data.series);
-  const actions = useMemo(() => parseActions(options.actionsJson, options.actionKeys), [options.actionsJson, options.actionKeys]);
+  const actions = useMemo(
+    () => configuredOptions.actions ?? parseActions(options.actionsJson, options.actionKeys),
+    [configuredOptions.actions, options.actionsJson, options.actionKeys]
+  );
 
   useEffect(() => {
     if (!Object.values(cooldowns).some((until) => until > now)) {
@@ -87,6 +90,7 @@ export function DeviceActionPanel({
                 <Button
                   key={action.key}
                   variant={action.style === 'destructive' ? 'destructive' : action.style ?? 'primary'}
+                  style={action.color ? { backgroundColor: action.color, borderColor: action.color } : undefined}
                   disabled={Boolean(inFlight) || remaining > 0}
                   title={action.description}
                   onClick={() => startAction(action)}
