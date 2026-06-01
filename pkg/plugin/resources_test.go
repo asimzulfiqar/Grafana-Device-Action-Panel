@@ -22,6 +22,13 @@ func TestBuildTargetURLRejectsAbsoluteActionPath(t *testing.T) {
 	}
 }
 
+func TestBuildTargetURLExplainsMissingBackendURL(t *testing.T) {
+	_, err := buildTargetURL("", "/devices/{{deviceId}}/reboot", ActionRequest{DeviceID: "device-1"})
+	if err == nil || !strings.Contains(err.Error(), "not configured") {
+		t.Fatalf("expected missing backend URL error, got %v", err)
+	}
+}
+
 func TestRenderTemplateRejectsUnsupportedPlaceholder(t *testing.T) {
 	_, err := renderTemplate(`{"device":"{{unknown}}"}`, ActionRequest{DeviceID: "device-1"}, false)
 	if err == nil || !strings.Contains(err.Error(), "unsupported placeholder") {
