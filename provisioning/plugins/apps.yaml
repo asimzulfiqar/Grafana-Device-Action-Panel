@@ -1,0 +1,27 @@
+apiVersion: 1
+
+apps:
+  - type: asim-device-action-app
+    org_id: 1
+    disabled: false
+    jsonData:
+      baseUrl: http://mock-api:8080
+      deviceIdPattern: ^[A-Za-z0-9][A-Za-z0-9._:-]{1,127}$
+      defaultTimeoutSeconds: 10
+      actions:
+        - key: cancel_alert
+          label: Cancel Alert
+          path: /devices/{{deviceId}}/alerts/cancel
+          method: POST
+          cooldownSeconds: 5
+        - key: acknowledge_alarm
+          label: Acknowledge Alarm
+          path: /devices/{{deviceId}}/alarms/acknowledge
+          method: POST
+          cooldownSeconds: 5
+        - key: reboot_device
+          label: Reboot Device
+          path: /devices/{{deviceId}}/reboot
+          method: POST
+          cooldownSeconds: 30
+

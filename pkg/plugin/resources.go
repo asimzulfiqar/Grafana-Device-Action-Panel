@@ -156,6 +156,9 @@ func (a *App) reserveCooldown(action ActionDefinition, deviceID string) bool {
 func buildTargetURL(baseURL, pathTemplate string, req ActionRequest) (string, error) {
 	base, err := url.Parse(baseURL)
 	if err != nil || base.Scheme == "" || base.Host == "" {
+		if strings.TrimSpace(baseURL) == "" {
+			return "", errors.New("backend base URL is not configured; save it from the panel editor Connector section")
+		}
 		return "", errors.New("backend base URL is invalid")
 	}
 	renderedPath, err := renderTemplate(pathTemplate, req, true)

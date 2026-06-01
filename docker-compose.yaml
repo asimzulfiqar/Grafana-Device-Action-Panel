@@ -7,8 +7,10 @@ services:
       GF_DEFAULT_APP_MODE: development
       GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: asim-device-action-app,asim-device-action-panel
     volumes:
+      - grafana-data:/var/lib/grafana
       - ./dist:/var/lib/grafana/plugins/asim-device-action-app
       - ./provisioning/dashboards:/etc/grafana/provisioning/dashboards
+      - ./provisioning/plugins:/etc/grafana/provisioning/plugins
     depends_on:
       mock-api:
         condition: service_healthy
@@ -22,3 +24,6 @@ services:
       interval: 5s
       timeout: 3s
       retries: 10
+
+volumes:
+  grafana-data:
