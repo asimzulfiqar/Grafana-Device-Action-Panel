@@ -2,7 +2,7 @@
 
 ## Execute action
 
-`POST /api/plugins/asim-device-action-app/resources/actions/execute`
+`POST /api/plugins/asim-deviceaction-app/resources/actions/execute`
 
 ```json
 {

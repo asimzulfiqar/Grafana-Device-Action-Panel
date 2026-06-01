@@ -5,7 +5,7 @@ import { Alert, Button, ColorPickerInput, Field, IconButton, Input, Select, Text
 import { DEFAULT_SETTINGS } from '../defaults';
 import type { ActionDefinition, ActionStyle, AppSettings, ConfirmationMode } from '../types';
 
-const APP_ID = 'asim-device-action-app';
+const APP_ID = 'asim-deviceaction-app';
 const METHODS: Array<SelectableValue<ActionDefinition['method']>> = [
   { label: 'GET', value: 'GET' },
   { label: 'POST', value: 'POST' },

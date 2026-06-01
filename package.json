@@ -9,6 +9,7 @@
     "test": "jest --runInBand",
     "e2e": "playwright test",
     "e2e:install": "playwright install chromium",
+    "release:package": "powershell -ExecutionPolicy Bypass -File ./scripts/package.ps1",
     "server": "docker compose up --build"
   },
   "dependencies": {

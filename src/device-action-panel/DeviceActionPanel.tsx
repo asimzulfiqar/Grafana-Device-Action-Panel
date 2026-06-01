@@ -2,11 +2,11 @@ import React, { useEffect, useMemo, useState } from 'react';
 import type { PanelProps } from '@grafana/data';
 import { getBackendSrv, getTemplateSrv } from '@grafana/runtime';
 import { Alert, Button, Input, Modal, Spinner } from '@grafana/ui';
-import type { ActionDefinition, ActionResponse } from '../types';
+import type { ActionDefinition, ActionResponse, GrafanaIdentity } from '../types';
 import { DEFAULT_PANEL_OPTIONS } from './defaults';
 import type { PanelOptions } from './types';
 
-const APP_ID = 'asim-device-action-app';
+const APP_ID = 'asim-deviceaction-app';
 
 interface PendingConfirmation {
   action: ActionDefinition;
@@ -25,12 +25,21 @@ export function DeviceActionPanel({
   const [confirming, setConfirming] = useState<PendingConfirmation>();
   const [cooldowns, setCooldowns] = useState<Record<string, number>>({});
   const [now, setNow] = useState(Date.now());
+  const [identity, setIdentity] = useState<GrafanaIdentity>();
 
   const deviceId = resolveDeviceId(options, data.series);
   const actions = useMemo(
     () => configuredOptions.actions ?? parseActions(options.actionsJson, options.actionKeys),
     [configuredOptions.actions, options.actionsJson, options.actionKeys]
   );
+  const visibleActions = actions.filter((action) => roleAllowed(identity?.role, action.allowedRoles));
+
+  useEffect(() => {
+    void getBackendSrv()
+      .get<GrafanaIdentity>(`/api/plugins/${APP_ID}/resources/identity`)
+      .then(setIdentity)
+      .catch(() => setIdentity({ user: '', role: '', orgId: 0 }));
+  }, []);
 
   useEffect(() => {
     if (!Object.values(cooldowns).some((until) => until > now)) {
@@ -50,6 +59,7 @@ export function DeviceActionPanel({
         deviceId,
         tenantId: replaceVariables(options.tenantTemplate),
         siteId: replaceVariables(options.siteTemplate),
+        dashboardUid: resolveDashboardUid(),
         panelId: id,
         requestedAt: new Date().toISOString(),
       });
@@ -83,7 +93,7 @@ export function DeviceActionPanel({
             <strong>{deviceId}</strong>
           </div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-            {actions.map((action) => {
+            {visibleActions.map((action) => {
               const remaining = Math.max(0, Math.ceil(((cooldowns[action.key] ?? 0) - now) / 1000));
               return (
                 <Button
@@ -104,6 +114,9 @@ export function DeviceActionPanel({
         </>
       )}
       {actions.length === 0 && <Alert title="No valid actions are configured for this panel." severity="error" />}
+      {actions.length > 0 && visibleActions.length === 0 && (
+        <Alert title="No actions are available for your Grafana role." severity="info" />
+      )}
       {result && (
         <div style={{ marginTop: 12 }}>
           <Alert title={result.message} severity={result.accepted ? 'success' : result.status === 'denied' ? 'warning' : 'error'}>
@@ -123,6 +136,15 @@ export function DeviceActionPanel({
       )}
     </div>
   );
+}
+
+function roleAllowed(role: string | undefined, allowedRoles: string[] | undefined): boolean {
+  return !allowedRoles?.length || Boolean(role && allowedRoles.some((allowed) => allowed.toLowerCase() === role.toLowerCase()));
+}
+
+function resolveDashboardUid(): string {
+  const parts = window.location.pathname.split('/');
+  return parts[1] === 'd' ? parts[2] ?? '' : '';
 }
 
 function ConfirmationModal({

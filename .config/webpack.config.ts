@@ -43,15 +43,20 @@ const config = (_env: Record<string, unknown>): Configuration => ({
     filename: '[name].js',
     library: { type: 'amd' },
     path: path.resolve(process.cwd(), 'dist'),
-    publicPath: 'public/plugins/asim-device-action-app/',
+    publicPath: 'public/plugins/asim-deviceaction-app/',
   },
   plugins: [
     new CopyWebpackPlugin({
       patterns: [
         { from: 'plugin.json', to: 'plugin.json' },
         { from: 'device-action-panel/plugin.json', to: 'device-action-panel/plugin.json' },
+        { from: 'img/logo.svg', to: 'device-action-panel/img/logo.svg' },
         { from: 'img', to: 'img' },
+        { from: '../docs/images', to: 'img/screenshots' },
         { from: '../README.md', to: 'README.md' },
+        { from: '../CHANGELOG.md', to: 'CHANGELOG.md' },
+        { from: '../LICENSE', to: 'LICENSE', noErrorOnMissing: true },
+        { from: '../package.json', to: 'package.json' },
       ],
     }),
   ],

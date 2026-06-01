@@ -1,7 +1,7 @@
 apiVersion: 1
 
 apps:
-  - type: asim-device-action-app
+  - type: asim-deviceaction-app
     org_id: 1
     disabled: false
     jsonData:

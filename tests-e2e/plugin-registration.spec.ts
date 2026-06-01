@@ -1,17 +1,17 @@
 import { expect, test } from '@grafana/plugin-e2e';
 
 test('registers the app and nested panel plugins', async ({ request }) => {
-  const app = await request.get('/api/plugins/asim-device-action-app/settings');
+  const app = await request.get('/api/plugins/asim-deviceaction-app/settings');
   expect(app.ok()).toBeTruthy();
   await expect(app.json()).resolves.toMatchObject({
-    id: 'asim-device-action-app',
+    id: 'asim-deviceaction-app',
     enabled: true,
   });
 
-  const panel = await request.get('/api/plugins/asim-device-action-panel/settings');
+  const panel = await request.get('/api/plugins/asim-deviceaction-panel/settings');
   expect(panel.ok()).toBeTruthy();
   await expect(panel.json()).resolves.toMatchObject({
-    id: 'asim-device-action-panel',
+    id: 'asim-deviceaction-panel',
   });
 });
 
@@ -25,7 +25,7 @@ test('provisions the demo dashboard and connector URL', async ({ request }) => {
     },
   });
 
-  const settings = await request.get('/api/plugins/asim-device-action-app/settings');
+  const settings = await request.get('/api/plugins/asim-deviceaction-app/settings');
   await expect(settings.json()).resolves.toMatchObject({
     jsonData: {
       baseUrl: 'http://mock-api:8080',

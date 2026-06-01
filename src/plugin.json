@@ -2,7 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/grafana/grafana/main/docs/sources/developers/plugins/plugin.schema.json",
   "type": "app",
   "name": "Grafana Device Action Panel",
-  "id": "asim-device-action-app",
+  "id": "asim-deviceaction-app",
   "backend": true,
   "executable": "gpx_device_action",
   "info": {
@@ -10,7 +10,11 @@
     "description": "Safe, validated, and auditable IoT actions from Grafana dashboards.",
     "author": { "name": "Asim" },
     "logos": { "small": "img/logo.svg", "large": "img/logo.svg" },
-    "screenshots": [],
+    "screenshots": [
+      { "name": "Provisioned device action dashboard", "path": "img/screenshots/demo-dashboard.png" },
+      { "name": "Typed reboot confirmation", "path": "img/screenshots/reboot-confirmation.png" },
+      { "name": "Panel-side connector settings", "path": "img/screenshots/connector-side-menu.png" }
+    ],
     "version": "0.1.0",
     "updated": "2026-06-01"
   },
@@ -18,7 +22,7 @@
     {
       "type": "page",
       "name": "Device Actions",
-      "path": "/a/asim-device-action-app",
+      "path": "/a/asim-deviceaction-app",
       "addToNav": true,
       "defaultNav": true
     },
@@ -26,9 +30,14 @@
       "type": "page",
       "icon": "cog",
       "name": "Configuration",
-      "path": "/plugins/asim-device-action-app",
+      "path": "/plugins/asim-deviceaction-app",
       "role": "Admin",
       "addToNav": true
+    },
+    {
+      "type": "panel",
+      "name": "Device Action Panel",
+      "path": "device-action-panel/plugin.json"
     }
   ],
   "dependencies": { "grafanaDependency": ">=12.3.0", "plugins": [] }

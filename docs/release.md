@@ -2,7 +2,7 @@
 
 ## Validate locally
 
-Run the full Stage 2 gate:
+Run the full local validation gate:
 
 ```powershell
 npm ci
@@ -13,6 +13,7 @@ docker run --rm -v "${PWD}:/src" -w /src golang:1.25.5 go test ./pkg/...
 docker run --rm -v "${PWD}:/src" -w /src golang:1.25.5 go build -o dist/gpx_device_action_linux_amd64 ./pkg
 docker compose up -d --build
 npm run e2e
+npm run release:package
 ```
 
 ## Cooldown policy
@@ -21,9 +22,15 @@ The backend reserves cooldown immediately before dispatching a valid outbound re
 
 ## Package
 
-For distribution, build all required backend architectures with Mage or the Grafana SDK build tooling, sign the plugin, rename `dist` to `asim-device-action-app`, and create a ZIP archive containing that directory.
+Create an unsigned release candidate:
 
-Backend binaries must be executable with mode `0755` on Unix platforms.
+```powershell
+npm run release:package
+```
+
+This creates `release/asim-deviceaction-app-0.1.0.zip` with Linux, macOS, and Windows backend binaries. The packaging script assigns mode `0755` to packaged backend binaries.
+
+Add a `LICENSE` file before publishing. The build includes it automatically when present. The license is a product-owner decision and is intentionally not selected by the build tooling.
 
 ## Sign
 
@@ -38,11 +45,25 @@ For a public catalog plugin, submit it for review before signing and omit `--roo
 
 ## Plugin validator
 
-Run Grafana's plugin validator against the packaged ZIP before publishing. Treat validator findings as release blockers unless they are documented and accepted intentionally.
+Run Grafana's plugin validator against the packaged ZIP before publishing:
+
+```powershell
+docker run --rm -v "${PWD}/release/asim-deviceaction-app-0.1.0.zip:/archive.zip" grafana/plugin-validator-cli /archive.zip
+```
+
+The archive-only validator currently passes structural checks and reports the expected unsigned warning plus the missing `LICENSE` release blocker. Run the full source scan in CI or before submission:
+
+```powershell
+docker run --rm `
+  -v "${PWD}/release/asim-deviceaction-app-0.1.0.zip:/archive.zip" `
+  -v "${PWD}:/source_code" `
+  grafana/plugin-validator-cli `
+  -sourceCodeUri file:///source_code `
+  /archive.zip
+```
 
 ## References
 
 - [Package a plugin](https://grafana.com/developers/plugin-tools/publish-a-plugin/package-a-plugin)
 - [Sign a plugin](https://grafana.com/developers/plugin-tools/publish-a-plugin/sign-a-plugin)
 - [Publishing best practices](https://grafana.com/developers/plugin-tools/publish-a-plugin/publishing-best-practices)
-

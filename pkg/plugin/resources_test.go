@@ -8,6 +8,8 @@ import (
 	"sync/atomic"
 	"testing"
 	"time"
+
+	"github.com/grafana/grafana-plugin-sdk-go/backend"
 )
 
 func TestBuildTargetURLUsesEscapedDeviceID(t *testing.T) {
@@ -47,6 +49,24 @@ func TestRoleAllowed(t *testing.T) {
 	}
 	if roleAllowed("Viewer", []string{"Admin", "Editor"}) {
 		t.Fatal("expected viewer to be denied")
+	}
+}
+
+func TestRequestIdentityUsesGrafanaPluginContext(t *testing.T) {
+	contextWithPlugin := backend.WithPluginContext(context.Background(), backend.PluginContext{OrgID: 42})
+	contextWithUser := backend.WithUser(contextWithPlugin, &backend.User{Login: "operator", Role: "Editor"})
+	req := httptest.NewRequest(http.MethodGet, "/identity", nil).WithContext(contextWithUser)
+
+	identity := requestIdentity(req)
+	if identity.User != "operator" || identity.Role != "Editor" || identity.OrgID != 42 {
+		t.Fatalf("unexpected identity: %+v", identity)
+	}
+}
+
+func TestParameterKeysAreSortedWithoutValues(t *testing.T) {
+	keys := parameterKeys(map[string]string{"mode": "secret-value", "reason": "maintenance"})
+	if strings.Join(keys, ",") != "mode,reason" {
+		t.Fatalf("unexpected parameter keys: %v", keys)
 	}
 }
 

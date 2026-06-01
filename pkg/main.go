@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	if err := app.Manage("asim-device-action-app", plugin.NewApp, app.ManageOpts{}); err != nil {
+	if err := app.Manage("asim-deviceaction-app", plugin.NewApp, app.ManageOpts{}); err != nil {
 		log.DefaultLogger.Error(err.Error())
 		os.Exit(1)
 	}

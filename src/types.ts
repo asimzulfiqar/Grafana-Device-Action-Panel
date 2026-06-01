@@ -45,3 +45,9 @@ export interface ActionResponse {
   completedAt: string;
   retryable?: boolean;
 }
+
+export interface GrafanaIdentity {
+  user: string;
+  role: string;
+  orgId: number;
+}

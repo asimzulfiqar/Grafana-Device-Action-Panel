@@ -10,14 +10,17 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"sort"
 	"strings"
 	"time"
 
+	"github.com/grafana/grafana-plugin-sdk-go/backend"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 )
 
 func (a *App) registerRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("/actions/execute", a.handleExecuteAction)
+	mux.HandleFunc("/identity", handleIdentity)
 }
 
 func (a *App) handleExecuteAction(w http.ResponseWriter, req *http.Request) {
@@ -32,6 +35,14 @@ func (a *App) handleExecuteAction(w http.ResponseWriter, req *http.Request) {
 	}
 	response, statusCode := a.executeAction(req.Context(), actionReq, requestIdentity(req))
 	writeJSON(w, statusCode, response)
+}
+
+func handleIdentity(w http.ResponseWriter, req *http.Request) {
+	if req.Method != http.MethodGet {
+		writeError(w, http.StatusMethodNotAllowed, "failed", "method not allowed")
+		return
+	}
+	writeJSONPayload(w, http.StatusOK, requestIdentity(req))
 }
 
 func (a *App) executeAction(ctx context.Context, req ActionRequest, identity Identity) (response ActionResponse, statusCode int) {
@@ -213,12 +224,19 @@ func extractCommandID(payload []byte) string {
 }
 
 type Identity struct {
-	User string
-	Role string
+	User  string `json:"user"`
+	Role  string `json:"role"`
+	OrgID int64  `json:"orgId"`
 }
 
 func requestIdentity(req *http.Request) Identity {
-	return Identity{User: req.Header.Get("X-Grafana-User"), Role: req.Header.Get("X-Grafana-Role")}
+	pluginContext := backend.PluginConfigFromContext(req.Context())
+	identity := Identity{OrgID: pluginContext.OrgID}
+	if user := backend.UserFromContext(req.Context()); user != nil {
+		identity.User = user.Login
+		identity.Role = user.Role
+	}
+	return identity
 }
 
 func roleAllowed(role string, allowed []string) bool {
@@ -237,14 +255,25 @@ func (a *App) audit(req ActionRequest, identity Identity, response ActionRespons
 	log.DefaultLogger.Info("device action audit",
 		"user", identity.User,
 		"role", identity.Role,
+		"orgId", identity.OrgID,
 		"dashboardUid", req.DashboardUID,
 		"panelId", req.PanelID,
 		"deviceId", req.DeviceID,
 		"actionKey", req.ActionKey,
+		"parameterKeys", parameterKeys(req.Parameters),
 		"outcome", response.Status,
 		"backendCode", response.BackendCode,
 		"httpStatus", backendCode,
 	)
+}
+
+func parameterKeys(parameters map[string]string) []string {
+	keys := make([]string, 0, len(parameters))
+	for key := range parameters {
+		keys = append(keys, key)
+	}
+	sort.Strings(keys)
+	return keys
 }
 
 func writeError(w http.ResponseWriter, code int, status, message string) {
@@ -252,6 +281,10 @@ func writeError(w http.ResponseWriter, code int, status, message string) {
 }
 
 func writeJSON(w http.ResponseWriter, code int, payload ActionResponse) {
+	writeJSONPayload(w, code, payload)
+}
+
+func writeJSONPayload(w http.ResponseWriter, code int, payload any) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(code)
 	_ = json.NewEncoder(w).Encode(payload)

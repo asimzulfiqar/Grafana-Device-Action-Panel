@@ -75,8 +75,8 @@ There are two stage lists in the repository. Use this table for the delivery sta
 | Stage 0: Discovery | Partial | Generic REST and the first three actions are chosen. A real customer backend, production identity mapping, and audit retention requirements still need decisions. |
 | Stage 1: Technical foundation | Done | App plugin, nested panel, Go resource handler, normalized contract, and REST connector are implemented. |
 | Stage 2: MVP action flow | Done | Variable binding, validation, confirmation, result states, cooldowns, and audit log emission are implemented. |
-| Stage 3: Hardening | Partial | Error handling, configuration UI, policy configuration, Go tests, Playwright tests, CI, and a realistic provisioned dashboard exist. Production role integration and theme/responsive verification remain. |
-| Stage 4: Release readiness | Partial | Documentation, screenshots, mock integration, example dashboard, and release instructions exist. A release archive has not been built, validated, signed, or submitted. |
+| Stage 3: Hardening | Done | Trusted Grafana identity and org role integration, role-aware button visibility, complete audit context, error handling, configuration UI, Go tests, Playwright tests, CI, and light/dark narrow-layout checks exist. |
+| Stage 4: Release readiness | Implemented locally | Documentation, screenshots, mock integration, example dashboard, changelog, catalog-valid IDs, multi-platform packaging, validator guidance, and tag-driven release automation exist. License selection, signing, and optional catalog submission require owner input. |
 
 `docs/next-steps.md` describes the completed local MVP verification milestone. It is not the post-MVP product roadmap.
 
@@ -92,14 +92,13 @@ The separate **Post-MVP stages** in `requirements.md` are future product expansi
 
 Resolve these before calling the plugin product-ready:
 
-1. Integrate production identity and authorization. Live Docker audit logs currently show empty `user` and `role` values. Verify the Grafana identity source, enforce the intended role mapping end to end, and hide or disable unavailable actions in the panel.
-2. Complete the audit contract. Include Grafana organization context, send `dashboardUid` from the panel, add a safe parameter summary, and decide whether logs alone satisfy retention and tamper-evidence requirements or whether an audit sink is required.
-3. Decide the first-release feature boundary. The requirements still describe optional icons, enabled states, custom success/failure templates, user-entered parameters, configurable headers, retry policy, and richer identifier presets. Either implement them or explicitly defer them from version `0.1.0`.
-4. Broaden release verification. Add frontend unit tests, role-aware browser tests through Grafana, and explicit light-theme, dark-theme, and smaller-layout checks. Run the CI matrix successfully on Grafana `12.3.0` and `12.4.2`.
-5. Choose private distribution or public catalog publication. Confirm ownership of the final plugin ID and add product metadata such as a license and changelog as needed.
-6. Build distribution binaries for the supported operating systems and architectures, ensure Unix binaries have mode `0755`, create the ZIP archive, run Grafana's plugin validator, and resolve its findings.
-7. Sign the final archive. Private plugins require matching `--rootUrls`; public catalog plugins must be submitted for Grafana review before public signing.
-8. For public catalog publication, host the ZIP and source repository, calculate the SHA1, and submit the plugin with testing guidance and the included provisioned environment.
+1. Choose and add a `LICENSE` file. Grafana's validator reports this as the remaining structural release blocker.
+2. Choose private distribution or public catalog publication and confirm ownership of the normalized plugin ID `asim-deviceaction-app`.
+3. Sign the final archive. Private plugins require matching `--rootUrls`; public catalog plugins must be submitted for Grafana review before public signing.
+4. Run the GitHub CI matrix successfully on Grafana `12.3.0` and `12.4.2`, then run the full validator source scan. The local archive-only validator already passes apart from the missing license and expected unsigned warning.
+5. Decide whether Grafana logs satisfy production audit retention and tamper-evidence requirements or whether an external audit sink is required.
+6. Decide the first-release feature boundary. The requirements still describe optional icons, enabled states, custom success/failure templates, user-entered parameters, configurable headers, retry policy, and richer identifier presets. Either implement them or explicitly defer them from version `0.1.0`.
+7. For public catalog publication, host the ZIP and source repository, calculate the SHA1, and submit the plugin with testing guidance and the included provisioned environment.
 
 ## Resume guide
 
@@ -114,6 +113,7 @@ docker run --rm -v "${PWD}:/src" -w /src golang:1.25.5 go test ./pkg/...
 docker run --rm -v "${PWD}:/src" -w /src golang:1.25.5 go build -o dist/gpx_device_action_linux_amd64 ./pkg
 docker compose up -d --build
 npm run e2e
+npm run release:package
 ```
 
 Then open:
@@ -125,12 +125,12 @@ Host mock API:  http://localhost:8080
 Docker URL:     http://mock-api:8080
 ```
 
-The highest-priority next engineering task is production Grafana identity and role integration, followed by audit completeness.
+The highest-priority release task is selecting a license, followed by signing for the chosen private or public distribution route.
 
 ## Screenshots
 
-![Provisioned demo dashboard](docs/images/demo-dashboard.png)
+![Provisioned demo dashboard](https://raw.githubusercontent.com/asimzulfiqar/Grafana-Device-Action-Panel/main/docs/images/demo-dashboard.png)
 
-![Typed reboot confirmation](docs/images/reboot-confirmation.png)
+![Typed reboot confirmation](https://raw.githubusercontent.com/asimzulfiqar/Grafana-Device-Action-Panel/main/docs/images/reboot-confirmation.png)
 
-![Panel connector side menu](docs/images/connector-side-menu.png)
+![Panel connector side menu](https://raw.githubusercontent.com/asimzulfiqar/Grafana-Device-Action-Panel/main/docs/images/connector-side-menu.png)

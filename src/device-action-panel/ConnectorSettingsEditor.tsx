@@ -5,7 +5,7 @@ import { Alert, Button, Field, Input, SecretInput } from '@grafana/ui';
 import { DEFAULT_SETTINGS } from '../defaults';
 import type { AppSettings } from '../types';
 
-const APP_ID = 'asim-device-action-app';
+const APP_ID = 'asim-deviceaction-app';
 
 export function ConnectorSettingsEditor(_props: StandardEditorProps<string>) {
   const [plugin, setPlugin] = useState<PluginMeta<AppSettings>>();

@@ -36,7 +36,7 @@
       "pluginVersion": "0.1.0",
       "targets": [],
       "title": "Selected Device",
-      "type": "asim-device-action-panel"
+      "type": "asim-deviceaction-panel"
     },
     {
       "fieldConfig": {
@@ -60,7 +60,7 @@
       "pluginVersion": "0.1.0",
       "targets": [],
       "title": "Missing Device",
-      "type": "asim-device-action-panel"
+      "type": "asim-deviceaction-panel"
     },
     {
       "fieldConfig": {
@@ -83,7 +83,7 @@
       "pluginVersion": "0.1.0",
       "targets": [],
       "title": "Denied Response",
-      "type": "asim-device-action-panel"
+      "type": "asim-deviceaction-panel"
     },
     {
       "fieldConfig": {
@@ -106,7 +106,7 @@
       "pluginVersion": "0.1.0",
       "targets": [],
       "title": "Backend Failure",
-      "type": "asim-device-action-panel"
+      "type": "asim-deviceaction-panel"
     },
     {
       "fieldConfig": {
@@ -129,7 +129,7 @@
       "pluginVersion": "0.1.0",
       "targets": [],
       "title": "Backend Timeout",
-      "type": "asim-device-action-panel"
+      "type": "asim-deviceaction-panel"
     },
     {
       "fieldConfig": {
@@ -152,7 +152,7 @@
       "pluginVersion": "0.1.0",
       "targets": [],
       "title": "Invalid Device ID",
-      "type": "asim-device-action-panel"
+      "type": "asim-deviceaction-panel"
     }
   ],
   "refresh": "",
