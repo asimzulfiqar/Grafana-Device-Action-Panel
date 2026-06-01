@@ -7,6 +7,8 @@
     "dev": "webpack -w -c ./.config/webpack.config.ts --env development",
     "typecheck": "tsc --noEmit",
     "test": "jest --runInBand",
+    "e2e": "playwright test",
+    "e2e:install": "playwright install chromium",
     "server": "docker compose up --build"
   },
   "dependencies": {
@@ -18,6 +20,8 @@
     "react-dom": "^18.3.0"
   },
   "devDependencies": {
+    "@grafana/plugin-e2e": "^3.9.0",
+    "@playwright/test": "^1.60.0",
     "@swc/core": "^1.15.0",
     "@types/node": "^24.0.0",
     "@types/react": "^18.3.0",

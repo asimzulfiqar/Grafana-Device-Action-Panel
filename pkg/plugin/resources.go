@@ -121,6 +121,12 @@ func (a *App) executeAction(ctx context.Context, req ActionRequest, identity Ide
 	payload, _ := io.ReadAll(io.LimitReader(result.Body, 64*1024))
 	response.CommandID = extractCommandID(payload)
 	if result.StatusCode < 200 || result.StatusCode >= 300 {
+		if result.StatusCode == http.StatusForbidden {
+			response.Status = "denied"
+			response.Message = "device backend denied the command"
+			statusCode = http.StatusForbidden
+			return
+		}
 		response.Message = fmt.Sprintf("device backend rejected the command with status %d", result.StatusCode)
 		statusCode = http.StatusBadGateway
 		return

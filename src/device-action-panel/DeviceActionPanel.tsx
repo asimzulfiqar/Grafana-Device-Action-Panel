@@ -57,8 +57,7 @@ export function DeviceActionPanel({
       setCooldowns((current) => ({ ...current, [action.key]: Date.now() + (action.cooldownSeconds ?? 0) * 1000 }));
       setNow(Date.now());
     } catch (error) {
-      const message = extractError(error);
-      setResult({ accepted: false, status: 'failed', message, completedAt: new Date().toISOString() });
+      setResult(extractActionError(error));
     } finally {
       setInFlight(undefined);
     }
@@ -73,7 +72,7 @@ export function DeviceActionPanel({
   };
 
   return (
-    <div style={{ padding: 12, height: '100%', overflow: 'auto' }}>
+    <div data-testid={`device-action-panel-${id}`} style={{ padding: 12, height: '100%', overflow: 'auto' }}>
       <h3 style={{ marginTop: 0 }}>{options.title}</h3>
       {!deviceId ? (
         <Alert title={options.emptyMessage} severity="warning" />
@@ -89,6 +88,7 @@ export function DeviceActionPanel({
               return (
                 <Button
                   key={action.key}
+                  data-testid={`action-${id}-${action.key}`}
                   variant={action.style === 'destructive' ? 'destructive' : action.style ?? 'primary'}
                   style={action.color ? { backgroundColor: action.color, borderColor: action.color } : undefined}
                   disabled={Boolean(inFlight) || remaining > 0}
@@ -197,12 +197,24 @@ function resolveDeviceId(options: PanelOptions, series: PanelProps<PanelOptions>
   return Array.isArray(raw) ? String(raw[0] ?? '').trim() : String(raw ?? '').trim();
 }
 
-function extractError(error: unknown): string {
+function extractActionError(error: unknown): ActionResponse {
   if (typeof error === 'object' && error && 'data' in error) {
-    const data = (error as { data?: { message?: string } }).data;
-    if (data?.message) {
-      return data.message;
+    const data = (error as { data?: Partial<ActionResponse> }).data;
+    if (data?.message && data.status) {
+      return {
+        accepted: false,
+        status: data.status,
+        message: data.message,
+        backendCode: data.backendCode,
+        completedAt: data.completedAt ?? new Date().toISOString(),
+        retryable: data.retryable,
+      };
     }
   }
-  return error instanceof Error ? error.message : 'The device action failed.';
+  return {
+    accepted: false,
+    status: 'failed',
+    message: error instanceof Error ? error.message : 'The device action failed.',
+    completedAt: new Date().toISOString(),
+  };
 }

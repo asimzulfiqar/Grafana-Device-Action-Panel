@@ -13,8 +13,7 @@
     "updated": "2026-06-01"
   },
   "dependencies": {
-    "grafanaDependency": ">=10.0.0",
+    "grafanaDependency": ">=12.3.0",
     "plugins": [{ "id": "asim-device-action-app", "type": "app", "name": "Grafana Device Action Panel", "version": "0.1.0" }]
   }
 }
-

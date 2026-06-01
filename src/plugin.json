@@ -31,6 +31,5 @@
       "addToNav": true
     }
   ],
-  "dependencies": { "grafanaDependency": ">=10.0.0", "plugins": [] }
+  "dependencies": { "grafanaDependency": ">=12.3.0", "plugins": [] }
 }
-

@@ -130,6 +130,29 @@
       "targets": [],
       "title": "Backend Timeout",
       "type": "asim-device-action-panel"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 0,
+        "y": 15
+      },
+      "id": 6,
+      "options": {
+        "actionKeys": "cancel_alert",
+        "bindingSource": "static",
+        "staticDeviceId": "bad id",
+        "title": "Invalid ID fixture"
+      },
+      "pluginVersion": "0.1.0",
+      "targets": [],
+      "title": "Invalid Device ID",
+      "type": "asim-device-action-panel"
     }
   ],
   "refresh": "",
@@ -190,4 +213,3 @@
   "version": 1,
   "weekStart": ""
 }
-

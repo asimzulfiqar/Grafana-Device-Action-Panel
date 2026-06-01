@@ -44,3 +44,14 @@ The panel editor's **Connector** section stores `baseUrl` in app JSON settings a
 Use the panel editor's **Actions** section to add buttons visually. Each button supports a label, stable action key, description, style, custom color, HTTP method, relative path, optional JSON body, confirmation mode, cooldown, timeout, and allowed roles. Click **Save action catalog** after editing so the server-side connector authorizes the updated buttons, then save the dashboard.
 
 Action paths must stay relative to the configured backend. Supported template placeholders are `{{deviceId}}`, `{{tenantId}}`, `{{siteId}}`, and `{{parameters.<name>}}`.
+
+## Verification
+
+```powershell
+npm run typecheck
+npm run build
+npm run e2e:install
+npm run e2e
+```
+
+See `docs/troubleshooting.md` for local setup issues and `docs/release.md` for packaging and signing guidance.

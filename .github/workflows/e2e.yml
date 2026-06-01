@@ -1,0 +1,35 @@
+name: E2E
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  plugin-e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      matrix:
+        grafana-version: ['12.3.0', '12.4.2']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.25.5'
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run typecheck
+      - run: npm run build
+      - run: go test ./pkg/...
+      - run: go build -o dist/gpx_device_action_linux_amd64 ./pkg
+      - run: docker compose up -d --build
+        env:
+          GRAFANA_VERSION: ${{ matrix.grafana-version }}
+      - run: npm run e2e
+      - if: always()
+        run: docker compose logs --no-color
